@@ -6,6 +6,9 @@
 #include "proc.h"
 #include "defs.h"
 
+// call added by Will
+#include "file.h"
+
 struct cpu cpus[NCPU];
 
 struct proc proc[NPROC];
@@ -680,4 +683,28 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+// encrypt and decrypt
+int encrypt(int fd, uint8 key)
+{
+  struct proc *p = myproc();
+  struct file *f;
+  f = p->ofile[fd];
+
+  if(f == 0)
+  {
+    return -1;
+  }
+
+  for(int i = 0; i < f->ip->size; i++)
+  {
+    uint8 buff;
+    readi(f->ip, 0, (uint64)&buff, i, 1);
+    buff = key ^ buff;
+    writei(f->ip, 0, (uint64)&buff, i, 1);
+  }
+
+  f->ip->encryption = !f->ip->encryption;
+  return 0;
 }

@@ -1,3 +1,6 @@
+// inmt fd = open(filename);
+// encrypt(fd, 255);
+
 // File system implementation.  Five layers:
 //   + Blocks: allocator for raw disk blocks.
 //   + Log: crash recovery for multi-step updates.
@@ -235,6 +238,7 @@ iupdate(struct inode *ip)
   dip->minor = ip->minor;
   dip->nlink = ip->nlink;
   dip->size = ip->size;
+  dip->encryption = ip->encryption;
   memmove(dip->addrs, ip->addrs, sizeof(ip->addrs));
   log_write(bp);
   brelse(bp);
@@ -271,6 +275,7 @@ iget(uint dev, uint inum)
   ip->inum = inum;
   ip->ref = 1;
   ip->valid = 0;
+  ip->encryption = 0;
   release(&itable.lock);
 
   return ip;
@@ -308,6 +313,7 @@ ilock(struct inode *ip)
     ip->minor = dip->minor;
     ip->nlink = dip->nlink;
     ip->size = dip->size;
+    ip->encryption = dip->encryption;
     memmove(ip->addrs, dip->addrs, sizeof(ip->addrs));
     brelse(bp);
     ip->valid = 1;
@@ -462,6 +468,7 @@ stati(struct inode *ip, struct stat *st)
   st->type = ip->type;
   st->nlink = ip->nlink;
   st->size = ip->size;
+  st->encryption = ip->encryption;
 }
 
 // Read data from inode.

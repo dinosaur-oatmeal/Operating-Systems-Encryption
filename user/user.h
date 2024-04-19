@@ -23,6 +23,10 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 
+// calls added by Will
+int encrypt(int, uint8);
+int decrypt(int, uint8);
+
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);

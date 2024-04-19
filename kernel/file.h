@@ -1,3 +1,8 @@
+#ifndef __FILE_H__
+  #define __FILE_H__
+  #include "fs.h"
+  #include "sleeplock.h"
+
 struct file {
   enum { FD_NONE, FD_PIPE, FD_INODE, FD_DEVICE } type;
   int ref; // reference count
@@ -27,6 +32,7 @@ struct inode {
   short nlink;
   uint size;
   uint addrs[NDIRECT+1];
+  uint8 encryption;
 };
 
 // map major device number to device functions.
@@ -38,3 +44,4 @@ struct devsw {
 extern struct devsw devsw[];
 
 #define CONSOLE 1
+#endif

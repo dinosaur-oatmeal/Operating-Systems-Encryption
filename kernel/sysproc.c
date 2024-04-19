@@ -89,3 +89,29 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+// encrypt system call
+uint64
+sys_encrypt(void)
+{
+  // implementation here
+  int fd;
+  argint(0, &fd);
+  int key;
+  argint(1, &key);
+
+  return encrypt(fd, (uint8)key);
+}
+
+// decrypt system call
+uint64
+sys_decrypt(void)
+{
+  // implementation here
+  int fd;
+  argint(0, &fd);
+  int key;
+  argint(1, &key);
+
+  return encrypt(fd, (uint8) key);
+}
