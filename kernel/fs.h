@@ -39,6 +39,7 @@ struct dinode {
   uint size;            // Size of file (bytes)
   uint addrs[NDIRECT+1];   // Data block addresses
   uint8 encryption;
+  char padding[63]; // doesn't compile without the padding
 };
 
 // Inodes per block.
