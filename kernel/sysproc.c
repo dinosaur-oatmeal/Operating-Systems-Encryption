@@ -100,7 +100,7 @@ sys_encrypt(void)
   int key;
   argint(1, &key);
 
-  return encrypt(fd, (uint8)key);
+  return encrypt(fd, (uint8)key, 1);
 }
 
 // decrypt system call
@@ -113,5 +113,5 @@ sys_decrypt(void)
   int key;
   argint(1, &key);
 
-  return encrypt(fd, (uint8) key);
+  return encrypt(fd, (uint8) key, 0);
 }

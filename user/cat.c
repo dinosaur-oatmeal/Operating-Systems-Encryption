@@ -36,6 +36,16 @@ main(int argc, char *argv[])
       fprintf(2, "cat: cannot open %s\n", argv[i]);
       exit(1);
     }
+
+    struct stat check;
+    fstat(fd, &check);
+
+    if(check.encryption == 1)
+    {
+      printf("Error: File is encrypted.\n");
+      return -1;
+    }
+
     cat(fd);
     close(fd);
   }

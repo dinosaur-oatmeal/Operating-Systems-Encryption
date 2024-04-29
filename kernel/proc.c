@@ -686,16 +686,25 @@ procdump(void)
 }
 
 // encrypt and decrypt
-int encrypt(int fd, uint8 key)
+int encrypt(int fd, uint8 key, int mode)
 {
   struct proc *p = myproc();
   struct file *f;
   f = p->ofile[fd];
 
+  // don't allow encrypt or decrypt to overwrite
+  if(f->ip->encryption == mode)
+  {
+    return -1;
+  }
+
   if(f == 0)
   {
     return -1;
   }
+
+  begin_op();
+  ilock(f->ip);
 
   for(int i = 0; i < f->ip->size; i++)
   {
@@ -705,6 +714,11 @@ int encrypt(int fd, uint8 key)
     writei(f->ip, 0, (uint64)&buff, i, 1);
   }
 
-  f->ip->encryption = !f->ip->encryption;
+  f->ip->encryption = mode;
+  iupdate(f->ip);
+
+  iunlock(f->ip);
+  end_op();
+
   return 0;
 }

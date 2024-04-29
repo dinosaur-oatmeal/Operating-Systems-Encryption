@@ -108,7 +108,8 @@ int             either_copyin(void *dst, int user_src, uint64 src, uint64 len);
 void            procdump(void);
 
 // added by Will
-int encrypt(int, uint8);
+int encrypt(int, uint8, int);
+int decrypt(int, uint8, int);
 
 // swtch.S
 void            swtch(struct context*, struct context*);

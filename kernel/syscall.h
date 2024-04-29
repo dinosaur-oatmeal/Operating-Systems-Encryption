@@ -23,3 +23,4 @@
 
 // added calls by Will
 #define SYS_encrypt 22
+#define SYS_decrypt 23

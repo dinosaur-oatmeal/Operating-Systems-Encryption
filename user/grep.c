@@ -55,6 +55,16 @@ main(int argc, char *argv[])
       printf("grep: cannot open %s\n", argv[i]);
       exit(1);
     }
+
+    struct stat check;
+    fstat(fd, &check);
+
+    if(check.encryption == 1)
+    {
+      printf("Error: File is encrypted.\n");
+      return -1;
+    }
+
     grep(pattern, fd);
     close(fd);
   }
